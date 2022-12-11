@@ -1,6 +1,24 @@
 #version 330 core
 //Adapted from lab 10
 
+//RAYTRACING FUNCTIONS AND STRUCTS
+struct Ray {
+    vec4 start;
+    vec3 direction;
+};
+Ray getOriginalRay();
+struct IntersectionResult {
+    int shapeIndex;
+    vec4 intersectionPosition;
+    vec4 intersectionNormal;
+};
+IntersectionResult traceRay(Ray ray);
+vec4 phongColor (IntersectionResult intersection);
+Ray getReflectedRay (IntersectionResult intersection, Ray originalRay);
+
+
+//GLOBAL SCENE DATA: SHAPES, LIGHTS, AND CONSTANTS
+
 // Declare "in" variables for the world-space position and normal,
 //         received post-interpolation from the vertex shader
 
@@ -10,16 +28,14 @@ out vec4 fragColor;// output color, which goes into the openGL clipping situatio
 
 uniform vec4 cameraPositionWorld;
 
-
-// Declare relevant uniform(s) here, for ambient lighting
+// Global lighting uniforms
 uniform float ka;
-
-// Declare relevant uniform here, for diffuse lighting
 uniform float kd;
+uniform float ks;
+uniform float shininess;
 
 // holds the number of lights that exist in the scene (for looping purposes)
 uniform int numLights;
-
 //create a struct for holding light information
 struct LightColorPos {
     vec4 color;
@@ -30,15 +46,8 @@ struct LightColorPos {
     float angle; //only for spot lights
     float penumbra; //only for spot lights
 };
-
 //create a uniform input for the light data
 uniform LightColorPos lights[8];
-
-// Declare relevant uniform(s) here, for specular lighting
-
-uniform float ks;
-uniform float shininess;
-
 // INSPO FOR SHAPE STRUCT
 struct ShapeData {
     mat4 ctm;
@@ -50,16 +59,46 @@ struct ShapeData {
     float shininess;
     vec4 cReflective;
 };
-
 uniform ShapeData shapes[1]; //constrains it to only one shape being passed in
 uniform int numShapes;
 
-//Color contributions from shapes
-uniform vec4 cSpecular;
-uniform vec4 cDiffuse;
-uniform vec4 cAmbient;
-
+//This main function raytraces a ray through the UV coordinate within a triangle on a full-screen quad. It raytraces only a single ray.
 void main() {
+    //Initialize fragColor
+    fragColor = vec4(vec3(0.f),1.f);
+    //Shift X and Y by -0.5 to be in the range [-0.5, 0.5]^2
+    float x = uvCoords[0]-0.5;
+    float y = uvCoords[1]-0.5;
+
+    //Find ray direction with UVK calculation in camera space
+    //Put ray in world space
+    Ray originalRay = getOriginalRay();
+    IntersectionResult firstIntersection = traceRay(originalRay);
+
+    //Trace ray in world space
+        //Find object index, position and normal of intersection
+        //Find Phong lighting at this position
+        //Return reflected ray and Phong lighting
+    fragColor = phongColor(firstIntersection);
+    Ray reflectedRay = getReflectedRay(firstIntersection, originalRay);
+    //Trace reflected ray, return reflected ray
+    //Trace reflected ray, return reflected ray
+    //Trace reflected ray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //___________________________________________________________________________
     // Remember that you need to renormalize vectors here if you want them to be normalized
 //    vec3 normal = normalize(normalWorld);
 
@@ -163,3 +202,20 @@ void main() {
 
 //    fragColor[3] = 1.f;
 }
+
+//generate the original ray, shot from the camera through the uvCoordinate on the full-screen quad
+Ray getOriginalRay() {}
+
+//find the FIRST intersected shape (primitives as of right now) that the ray passes through and return the
+//position of intersection, normal, and which shape (in the form of the shape's index) was intersected
+IntersectionResult traceRay(Ray ray) {
+    //loop through all the shapes, keeping track of the smallest T value, and the shape index, normal, and position associated with this
+}
+
+//Get the color of the shape at the intersected point
+vec4 phongColor (IntersectionResult intersection) {
+    return vec4(1.f);
+}
+
+//Get the reflected ray at the point of intersection so that traceRay can be run again iteratively
+Ray getReflectedRay (IntersectionResult intersection, Ray originalRay) {}

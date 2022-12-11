@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 8.0.1, 2022-12-10T15:45:14. -->
+<!-- Written by QtCreator 8.0.1, 2022-12-11T18:07:31. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -355,7 +355,7 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory">/Users/carolinekaleel/Documents/School_Stuff/Brown/CSCI_1230/final-personal/gpu-raytracer-personal</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory">/Users/carolinekaleel/Documents/School_Stuff/Brown/CSCI_1230/gpu-raytracer/personal-gpu-raytracer</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/carolinekaleel/Documents/School_Stuff/Brown/CSCI_1230/final-personal/build-projects-realtime-cocokaleel-Qt_6_2_4_for_macOS-Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
