@@ -222,8 +222,16 @@ void Realtime::paintGeometryPhong() {
 
     glUniform4fv(glGetUniformLocation(m_shader, "cameraPositionWorld"), 1, &cameraPosition[0]);
 
+
+    //pass in the height angle and width angle
+    float heightAngle = metaData.cameraData.heightAngle;
+    float widthAngle = heightAngle * float(width()) / float(height());
+    glUniform1f(glGetUniformLocation(m_shader, "widthAngle"), widthAngle);
+    glUniform1f(glGetUniformLocation(m_shader, "heightAngle"), heightAngle);
+
     // Pass in m_view and m_proj
     glUniformMatrix4fv(glGetUniformLocation(m_shader, "viewMatrix"), 1, GL_FALSE, &viewMatrix[0][0]);
+    glUniformMatrix4fv(glGetUniformLocation(m_shader, "viewMatrixInverse"), 1, GL_FALSE, &glm::inverse(viewMatrix)[0][0]);
     glUniformMatrix4fv(glGetUniformLocation(m_shader, "projectionMatrix"), 1, GL_FALSE, &projectionMatrix[0][0]);
 
     //pass in ka, ks, and kd (global coefficients for ambient, specular, and diffuse lighting)
@@ -277,6 +285,7 @@ void Realtime::paintGeometryPhong() {
         //pass in all the shape-specific information to the first full-screen quad shader
         GLint matrix = glGetUniformLocation(m_shader, ("shapes[" + std::to_string(shapeCounter) + "].ctm").c_str());
         GLint matrixInv = glGetUniformLocation(m_shader, ("shapes[" + std::to_string(shapeCounter) + "].ctmInv").c_str());
+        GLint normalMat = glGetUniformLocation(m_shader, ("shapes[" + std::to_string(shapeCounter) + "].normalMat").c_str());
         GLint type = glGetUniformLocation(m_shader, ("shapes[" + std::to_string(shapeCounter) + "].type").c_str());
         GLint cAmbient = glGetUniformLocation(m_shader, ("shapes[" + std::to_string(shapeCounter) + "].cAmbient").c_str());
         GLint cDiffuse = glGetUniformLocation(m_shader, ("shapes[" + std::to_string(shapeCounter) + "].cDiffuse").c_str());
@@ -286,7 +295,8 @@ void Realtime::paintGeometryPhong() {
 
         //pass in shape matrix and inverse matrix because inverting is costly
         glUniformMatrix4fv(matrix, 1, GL_FALSE, &shape.ctm[0][0]);
-        glUniformMatrix3fv(matrix, 1, GL_FALSE, &glm::inverse(glm::transpose(glm::mat3(shape.ctm)))[0][0]);
+        glUniformMatrix3fv(normalMat, 1, GL_FALSE, &glm::inverse(glm::transpose(glm::mat3(shape.ctm)))[0][0]);
+        glUniformMatrix4fv(matrixInv, 1, GL_FALSE, &glm::inverse(shape.ctm)[0][0]);
 
 
         // Pass in shininess and color components

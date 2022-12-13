@@ -1,23 +1,13 @@
-# Projects 5 & 6: Lights, Camera & Action!
+# GLSL GPU Raytracer
 
 Overview:
 
-In this project (Lights, Camera, Action!), I created a 3D rendering engine which converts .xml files describing scenes into 2D representations
-of the 3D scenes. However, instead of using multivariable calculus to determine what an object primitive is, I generate the object
-primitives as meshes of triangles using some trigonometry.
-
-In this project, I utilize the OpenGL API to handle the rasterization and clipping. I wrote a vertex shader, in which object primitive
-normals are converted to world space per each object, that passes positions into a fragment shader where Phong lighting is applied to them.
-
-For each type of object, I store a VAO with a VBO that has been set up with normals and positions. These VBOs are reinitialized when the
-parameter1 and parameter2 settings are changed, and then paintGL is called.
-
-Within paintGL, I pass the array of light information into the shaders along with other scene data, then go through each shape, binding 
-the appropriate VAO, and render each shape with its specific VAO and material color information. 3 different types of lights can be
-rendered: directional, point (with light attenuation), and spot (with light attenuation and penumbra). Up to 8 lights can be supported per scene.
-
-Prior to this process, I have calculated the camera position and view and perspective matrices, which are updated when the screen is resized
-or the near or far plane are modified.
+In this project, I am writing a GPU raytracer, written with OpenGL (in GLSL). I use a fullscreen quad (2 triangles that cover the full screen) that
+I pass as a VAO into a vertex shader, which only passes the info immediately into a fragment shader for each uv coordinate pair representing a pixel
+in the screen. For each uv coordinate, I "shoot" a ray from the digital camera position through this coordinate point and trace it (as of right now)
+through the list of object primitives defined by their multivariable representations (not polygonal meshse) to find intersections. I then use Phong
+lighting and shadows to determine the color of that pixel, and trace the reflected ray to iterate this process 3 times (GLSL doesn't support
+recursion). Thus, I am tracing all pixels.
 
 After this geometry rendering process, I have implemented 3 filtering functions: luma grayscale (per pixel) ("Per Pixel Filter"), inverse (per
 pixel) ("Extra Credit 1"), and a 5-wide box blur ("Kernel-Based Filter"). Instead of the geometry and Phong rendering going directly to the
