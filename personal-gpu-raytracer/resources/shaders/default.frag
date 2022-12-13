@@ -75,45 +75,30 @@ void main() {
     fragColor = vec4(vec3(0.f),1.f);
 
     //Find ray direction with UVK calculation in camera space and then put it in worldspace
-    Ray originalRay = getOriginalRayWorldSpace();
-    IntersectionResult firstIntersection = traceRay(originalRay);
-    //Inspo:
-    //illumination += scene.getGlobalData().ks*shape.primitive.material.cReflective*getReflection(incomingRay, normal4, positionOfIntersection, scene, recursionDepth);
+    Ray ray1 = getOriginalRayWorldSpace();
+    IntersectionResult intersection = traceRay(ray1);
 
     //There is no recursion in GLSL,
     //Thus I had to do this iteratively :(
-    if (firstIntersection.shapeIndex != -1) {
+    if (intersection.shapeIndex != -1) {
         //If the ray hits something, get its Phong color
-        fragColor = phongColor(firstIntersection);
-        //bounce ray and trace it
-        Ray reflectedRay1 = getReflectedRay(firstIntersection, originalRay);
-        IntersectionResult secondIntersection = traceRay(reflectedRay1);
-        if (secondIntersection.shapeIndex != -1) {
-            //if second ray intersects, add the multiplied color to first intersection's
-            //coloration
-            vec4 shape2Color = phongColor(secondIntersection);
-            fragColor += ks*shapes[firstIntersection.shapeIndex].cReflective*shape2Color;
+        fragColor = phongColor(intersection);
+        Ray reflectedRay;
 
+        for (int i = 0; i < 3; i++) {
             //bounce ray and trace it
-            Ray reflectedRay2 = getReflectedRay(secondIntersection, reflectedRay1);
-            IntersectionResult thirdIntersection = traceRay(reflectedRay2);
-            if (thirdIntersection.shapeIndex != -1) {
-                //if second ray intersects, add the multiplied color to first intersection's
-                //coloration
-                vec4 shape3Color = phongColor(thirdIntersection);
-                fragColor += ks*shapes[secondIntersection.shapeIndex].cReflective*shape3Color;
+            reflectedRay = getReflectedRay(intersection, ray1);
+            IntersectionResult intersection2 = traceRay(reflectedRay);
+            if (intersection.shapeIndex != -1) {
+                //if bounced ray hits, add its color contribution to the shape
+                vec4 shape2Color = phongColor(intersection2);
+                fragColor += ks*shapes[intersection.shapeIndex].cReflective*shape2Color;
 
-
-//                //bounce ray and trace it
-//                Ray reflectedRay3 = getReflectedRay(thirdIntersection, reflectedRay2);
-//                IntersectionResult fourthIntersection = traceRay(reflectedRay3);
-//                if (fourthIntersection.shapeIndex != -1) {
-//                    //if second ray intersects, add the multiplied color to first intersection's
-//                    //coloration
-//                    vec4 shape4Color = phongColor(fourthIntersection);
-//                    fragColor += ks*shapes[thirdIntersection.shapeIndex].cReflective*shape4Color;
-//                }
-
+                intersection = intersection2;
+                ray1 = reflectedRay;
+            } else {
+                //if bounced ray doesn't hit, stop reflecting it
+                break;
             }
         }
     }

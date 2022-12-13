@@ -5,12 +5,12 @@ Overview:
 In this project, I am writing a GPU raytracer, written with OpenGL (in GLSL). I use a fullscreen quad (2 triangles that cover the full screen) that
 I pass as a VAO into a vertex shader, which only passes the info immediately into a fragment shader for each uv coordinate pair representing a pixel
 in the screen. For each uv coordinate, I "shoot" a ray from the digital camera position through this coordinate point and trace it (as of right now)
-through the list of object primitives defined by their multivariable representations (not polygonal meshse) to find intersections. I then use Phong
-lighting and shadows to determine the color of that pixel, and trace the reflected ray to iterate this process 3 times (GLSL doesn't support
+through the list of object primitives (currently only spheres) defined by their multivariable representations (not polygonal meshse) to find intersections.
+I then use Phong lighting and shadows to determine the color of that pixel, and trace the reflected ray to iterate this process 3 times (GLSL doesn't support
 recursion). Thus, I am tracing all pixels. Also, lighting doesn't include an exception for a point-light existing in the middle of the scene.
 
-After this geometry rendering process, I have implemented 3 filtering functions: luma grayscale (per pixel) ("Per Pixel Filter"), inverse (per
-pixel) ("Extra Credit 1"), and a 5-wide box blur ("Kernel-Based Filter"). Instead of the geometry and Phong rendering going directly to the
+After this geometry rendering process, I have implemented 3 filtering functions: luma grayscale (per pixel), inverse (per
+pixel), and a 5-wide box blur. Instead of the geometry and Phong rendering going directly to the
 screen, they are rendered to a framebuffer that stores depth and stencil information in a renderbuffer and color in a texture. After the
 phong lighting, I pass the texture through the filter shaders onto a fullscreen quad, which then is rendered to the screen (default framebuffer).
 
@@ -37,12 +37,12 @@ Run instructions:
 If running from QT, make sure to specify the run directory as the project directory and specify parameters inside program.
 Else, just run the compiled project and specify parameters inside program.
 
-Known Bugs:
-None
+Future work:
+I would like to implement this on cones, cubes, and cylinders as well!
 
-Extra Credit:
- - Extra per-pixel filter implemented (inverse)
+Known Bugs:
+If a point light in the XML is placed in the middle of the scene, shadows might get weird. Tbh, I haven't tested it.
 
 Acknowledgements:
-
-Thank you again to the TAs - this one was the least treacherous project since 2D projects, but Ed was still a great resouce!
+This project is a culmination of my learning in CSCI 1230: Introduction to Computer Graphics at Brown University, taught by Prof. Daniel Ritchie in Fall of 2022. I
+have learned so much and the class was honestly magical. I'm not submitting this code repo itself anywhere, but it will be factored into my final project.
