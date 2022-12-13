@@ -7,7 +7,7 @@ I pass as a VAO into a vertex shader, which only passes the info immediately int
 in the screen. For each uv coordinate, I "shoot" a ray from the digital camera position through this coordinate point and trace it (as of right now)
 through the list of object primitives defined by their multivariable representations (not polygonal meshse) to find intersections. I then use Phong
 lighting and shadows to determine the color of that pixel, and trace the reflected ray to iterate this process 3 times (GLSL doesn't support
-recursion). Thus, I am tracing all pixels.
+recursion). Thus, I am tracing all pixels. Also, lighting doesn't include an exception for a point-light existing in the middle of the scene.
 
 After this geometry rendering process, I have implemented 3 filtering functions: luma grayscale (per pixel) ("Per Pixel Filter"), inverse (per
 pixel) ("Extra Credit 1"), and a 5-wide box blur ("Kernel-Based Filter"). Instead of the geometry and Phong rendering going directly to the
