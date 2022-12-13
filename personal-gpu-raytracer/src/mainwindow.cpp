@@ -48,12 +48,12 @@ void MainWindow::initialize() {
 
     // Create checkbox for per-pixel filter
     filter1 = new QCheckBox();
-    filter1->setText(QStringLiteral("Per-Pixel Filter"));
+    filter1->setText(QStringLiteral("Grayscale Filter (Per Pixel)"));
     filter1->setChecked(false);
 
     // Create checkbox for kernel-based filter
     filter2 = new QCheckBox();
-    filter2->setText(QStringLiteral("Kernel-Based Filter"));
+    filter2->setText(QStringLiteral("5-pixel Box Blur Filter (Kernel-Based)"));
     filter2->setChecked(false);
 
     // Create file uploader for scene file
@@ -142,7 +142,7 @@ void MainWindow::initialize() {
 
     // Extra Credit:
     ec1 = new QCheckBox();
-    ec1->setText(QStringLiteral("Extra Credit 1"));
+    ec1->setText(QStringLiteral("Invert Colors (Per Pixel)"));
     ec1->setChecked(false);
 
     ec2 = new QCheckBox();
@@ -158,25 +158,15 @@ void MainWindow::initialize() {
     ec4->setChecked(false);
 
     vLayout->addWidget(uploadFile);
-    vLayout->addWidget(tesselation_label);
-    vLayout->addWidget(param1_label);
-    vLayout->addWidget(p1Layout);
-    vLayout->addWidget(param2_label);
-    vLayout->addWidget(p2Layout);
-    vLayout->addWidget(camera_label);
-    vLayout->addWidget(near_label);
-    vLayout->addWidget(nearLayout);
-    vLayout->addWidget(far_label);
-    vLayout->addWidget(farLayout);
     vLayout->addWidget(filters_label);
     vLayout->addWidget(filter1);
     vLayout->addWidget(filter2);
     // Extra Credit:
-    vLayout->addWidget(ec_label);
+//    vLayout->addWidget(ec_label);
     vLayout->addWidget(ec1);
-    vLayout->addWidget(ec2);
-    vLayout->addWidget(ec3);
-    vLayout->addWidget(ec4);
+//    vLayout->addWidget(ec2);
+//    vLayout->addWidget(ec3);
+//    vLayout->addWidget(ec4);
 
     connectUIElements();
 
@@ -198,10 +188,10 @@ void MainWindow::connectUIElements() {
     connectPerPixelFilter();
     connectKernelBasedFilter();
     connectUploadFile();
-    connectParam1();
-    connectParam2();
-    connectNear();
-    connectFar();
+//    connectParam1();
+//    connectParam2();
+//    connectNear();
+//    connectFar();
     connectExtraCredit();
 }
 

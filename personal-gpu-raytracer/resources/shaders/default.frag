@@ -104,32 +104,19 @@ void main() {
                 fragColor += ks*shapes[secondIntersection.shapeIndex].cReflective*shape3Color;
 
 
-                //bounce ray and trace it
-                Ray reflectedRay3 = getReflectedRay(thirdIntersection, reflectedRay2);
-                IntersectionResult fourthIntersection = traceRay(reflectedRay3);
-                if (fourthIntersection.shapeIndex != -1) {
-                    //if second ray intersects, add the multiplied color to first intersection's
-                    //coloration
-                    vec4 shape4Color = phongColor(fourthIntersection);
-                    fragColor += ks*shapes[thirdIntersection.shapeIndex].cReflective*shape4Color;
-                }
+//                //bounce ray and trace it
+//                Ray reflectedRay3 = getReflectedRay(thirdIntersection, reflectedRay2);
+//                IntersectionResult fourthIntersection = traceRay(reflectedRay3);
+//                if (fourthIntersection.shapeIndex != -1) {
+//                    //if second ray intersects, add the multiplied color to first intersection's
+//                    //coloration
+//                    vec4 shape4Color = phongColor(fourthIntersection);
+//                    fragColor += ks*shapes[thirdIntersection.shapeIndex].cReflective*shape4Color;
+//                }
 
             }
         }
     }
-    //Trace ray in world space
-        //Find object index, position and normal of intersection
-        //Find Phong lighting at this position
-        //Return reflected ray and Phong lighting
-
-    //if there's a shape that's intersected, the shape index will be 0+
-//    if (firstIntersection.shapeIndex!=-1) {
-
-//    }
-//    Ray reflectedRay = getReflectedRay(firstIntersection, originalRay);
-    //Trace reflected ray, return reflected ray
-    //Trace reflected ray, return reflected ray
-    //Trace reflected ray
 }
 
 //generate the original ray, shot from the camera through the uvCoordinate on the full-screen quad
